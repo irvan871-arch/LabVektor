@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Laboratorium Vektor – Matematika SMA</title>
+<style>
+:root{--bg:#f4f7fb;--card:#fff;--ink:#17243a;--muted:#5d6b80;--line:#d9e1ec;--blue:#2369c8;--green:#16845e;--orange:#d98216}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,Arial,sans-serif}
+header{background:#173b68;color:white;padding:22px 16px}header .wrap,main{max-width:980px;margin:auto}
+h1{margin:0;font-size:clamp(24px,5vw,34px)}header p{margin:6px 0 0;color:#dce9fa}
+main{padding:18px 14px 40px}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+button{border:1px solid var(--line);background:white;color:var(--ink);border-radius:10px;padding:10px 13px;font-weight:600;cursor:pointer}
+button.active,.primary{background:#e5efff;border-color:#8bb5f0;color:#174d94}
+button:disabled{opacity:.6;cursor:default}.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin:12px 0;box-shadow:0 2px 8px #20344d0a}
+.muted{color:var(--muted);font-size:.92rem}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:12px 0}
+.metric{background:#f0f4fa;border-radius:10px;padding:11px;min-width:0}.metric small{display:block;color:var(--muted)}.metric strong{font-size:1.18rem;overflow-wrap:anywhere}
+label{display:block;font-size:.93rem;margin:10px 0}input[type=range]{display:block;width:100%;accent-color:var(--blue);margin-top:7px}
+canvas{width:100%;height:auto;display:block;background:#fbfcff;border:1px solid var(--line);border-radius:10px}
+.explain{background:#eef4fc;border-left:4px solid var(--blue);padding:12px;border-radius:8px;margin-top:12px}
+.hidden{display:none!important}.choices{display:grid;gap:8px;margin-top:14px}.choices button{text-align:left}
+footer{text-align:center;color:var(--muted);font-size:.82rem;padding:20px}
+@media(max-width:560px){.grid{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}.panel{padding:13px}}
+</style></head>
+<body>
+<header><div class="wrap"><h1>🔬 Laboratorium Vektor</h1><p>Media pembelajaran interaktif Matematika SMA • Eksplorasi pada bidang Kartesius</p></div></header>
+<main>
+<div class="tabs" id="tabs">
+<button class="active" data-tab="konsep">01 Konsep</button><button data-tab="operasi">02 Operasi</button><button data-tab="besar">03 Panjang & Sudut</button><button data-tab="tantangan">04 Tantangan</button>
+</div>
+<section id="page-konsep">
+<div class="panel"><h2>Memahami konsep vektor</h2><p class="muted">Vektor adalah besaran yang memiliki besar (panjang) dan arah. Geser komponen x dan y untuk melihat perubahan vektor.</p>
+<canvas id="graph1" width="700" height="460" aria-label="Grafik vektor pada bidang koordinat"></canvas>
+<div class="grid"><label>Komponen x: <b id="axv">4</b><input id="ax" type="range" min="-8" max="8" value="4"></label><label>Komponen y: <b id="ayv">3</b><input id="ay" type="range" min="-8" max="8" value="3"></label></div>
+<div class="metrics"><div class="metric"><small>Vektor a</small><strong id="av">(4, 3)</strong></div><div class="metric"><small>Panjang vektor</small><strong id="alen">5 satuan</strong></div></div>
+<div class="explain" id="conceptText">Vektor bergerak 4 satuan ke kanan dan 3 satuan ke atas.</div><button id="reset1">↺ Kembalikan contoh awal</button></div>
+<div class="panel"><b>Amati dan simpulkan</b><ol><li>Apa yang terjadi jika komponen x bernilai negatif?</li><li>Apa yang terjadi jika komponen y bernilai negatif?</li><li>Bagaimana perubahan panjang vektor ketika salah satu komponen diperbesar?</li></ol></div>
+</section>
+<section id="page-operasi" class="hidden">
+<div class="panel"><h2>Penjumlahan dua vektor</h2><p class="muted">Vektor b diletakkan di ujung vektor a. Vektor resultan R ditarik dari pangkal a ke ujung akhir b.</p>
+<canvas id="graph2" width="700" height="460" aria-label="Grafik penjumlahan dua vektor"></canvas>
+<p class="muted">🟦 a &nbsp; 🟩 b &nbsp; 🟠 R = a + b</p>
+<div class="grid"><div><b>Vektor a</b><label>x = <b id="ox1">3</b><input id="ox" type="range" min="-5" max="5" value="3"></label><label>y = <b id="oy1">2</b><input id="oy" type="range" min="-5" max="5" value="2"></label></div>
+<div><b>Vektor b</b><label>x = <b id="px1">2</b><input id="px" type="range" min="-5" max="5" value="2"></label><label>y = <b id="py1">3</b><input id="py" type="range" min="-5" max="5" value="3"></label></div></div>
+<div class="metrics"><div class="metric"><small>a</small><strong id="oa">(3,2)</strong></div><div class="metric"><small>b</small><strong id="pb">(2,3)</strong></div><div class="metric"><small>Resultan</small><strong id="rr">(5,5)</strong></div></div>
+<div class="explain" id="opText">R = (3+2, 2+3) = (5,5).</div><button id="reset2">↺ Reset operasi</button></div>
+</section>
+<section id="page-besar" class="hidden">
+<div class="panel"><h2>Panjang dan sudut vektor</h2><p class="muted">Sudut diukur berlawanan arah jarum jam dari sumbu x positif.</p>
+<canvas id="graph3" width="700" height="460" aria-label="Grafik panjang dan sudut vektor"></canvas>
+<div class="grid"><label>Komponen x: <b id="bxv">3</b><input id="bx" type="range" min="-8" max="8" value="3"></label><label>Komponen y: <b id="byv">4</b><input id="by" type="range" min="-8" max="8" value="4"></label></div>
+<div class="metrics"><div class="metric"><small>Panjang vektor</small><strong id="blen">5</strong></div><div class="metric"><small>Sudut arah</small><strong id="bangle">53,13°</strong></div></div>
+<div class="explain" id="bigText">Panjang = √(3² + 4²) = 5 satuan.</div></div>
+<div class="panel"><b>Rumus penting</b><p>Panjang vektor a = (x, y): &nbsp; |a| = √(x² + y²)</p><p>Sudut arah: θ = atan2(y, x), dinyatakan dalam derajat.</p></div>
+</section>
+<section id="page-tantangan" class="hidden">
+<div class="panel"><h2>🎯 Tantangan pemahaman</h2><p class="muted">Pilih satu jawaban terbaik. Umpan balik akan muncul setelah kamu menjawab.</p>
+<p id="qnum">Soal 1 dari 5</p><h3 id="question">Sebuah vektor memiliki komponen (3,4). Berapakah panjangnya?</h3><div class="choices" id="choices"></div>
+<div id="feedback" class="explain hidden" aria-live="polite"></div><button id="nextQ" class="primary hidden">Soal berikutnya →</button></div>
+<div class="metric"><small>Skor sementara</small><strong id="score">0 / 5</strong></div><button id="restartQ">↺ Ulangi tantangan</button></section>
+<footer>Laboratorium Vektor • Media pembelajaran Matematika SMA</footer>
+</main>
+<script>
+(()=>{
+const $=id=>document.getElementById(id),v=id=>Number($(id).value),fmt=n=>Number(n.toFixed(2)).toLocaleString('id-ID',{maximumFractionDigits:2});
+function graph(id,arrows){let c=$(id),ctx=c.getContext('2d'),w=c.width,h=c.height,s=28,cx=w/2,cy=h/2;ctx.clearRect(0,0,w,h);ctx.font='13px Arial';ctx.strokeStyle='#e0e6ef';ctx.lineWidth=1;
+for(let i=-11;i<=11;i++){ctx.beginPath();ctx.moveTo(cx+i*s,15);ctx.lineTo(cx+i*s,h-20);ctx.stroke();ctx.beginPath();ctx.moveTo(12,cy-i*s);ctx.lineTo(w-12,cy-i*s);ctx.stroke()}
+ctx.strokeStyle='#68778d';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(12,cy);ctx.lineTo(w-12,cy);ctx.moveTo(cx,h-12);ctx.lineTo(cx,12);ctx.stroke();ctx.fillStyle='#68778d';ctx.textAlign='center';for(let i=-10;i<=10;i+=2){ctx.fillText(i,cx+i*s,cy+17);if(i)ctx.fillText(i,cx-15,cy-i*s+4)}
+arrows.forEach(([x1,y1,x2,y2,color,label])=>{let X1=cx+x1*s,Y1=cy-y1*s,X2=cx+x2*s,Y2=cy-y2*s,a=Math.atan2(Y2-Y1,X2-X1),l=14;ctx.strokeStyle=color;ctx.fillStyle=color;ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(X1,Y1);ctx.lineTo(X2,Y2);ctx.stroke();ctx.beginPath();ctx.moveTo(X2,Y2);ctx.lineTo(X2-l*Math.cos(a-.45),Y2-l*Math.sin(a-.45));ctx.lineTo(X2-l*Math.cos(a+.45),Y2-l*Math.sin(a+.45));ctx.closePath();ctx.fill();ctx.font='bold 17px Arial';ctx.textAlign='left';ctx.fillText(label,X2+8,Y2-9)})}
+function draw1(){let x=v('ax'),y=v('ay'),m=Math.hypot(x,y);$('axv').textContent=x;$('ayv').textContent=y;$('av').textContent=`(${x}, ${y})`;$('alen').textContent=fmt(m)+' satuan';$('conceptText').textContent=`Perpindahan: ${Math.abs(x)} satuan ${x<0?'ke kiri':'ke kanan'} dan ${Math.abs(y)} satuan ${y<0?'ke bawah':'ke atas'}. Panjang vektor = ${fmt(m)} satuan.`;graph('graph1',[[0,0,x,y,'#2369c8','a']])}
+function draw2(){let a=v('ox'),b=v('oy'),c=v('px'),d=v('py'),x=a+c,y=b+d;['ox1','oy1','px1','py1'].forEach((id,i)=>$(id).textContent=[a,b,c,d][i]);$('oa').textContent=`(${a},${b})`;$('pb').textContent=`(${c},${d})`;$('rr').textContent=`(${x},${y})`;$('opText').textContent=`R = a + b = (${a}+${c}, ${b}+${d}) = (${x},${y}). Komponen resultan adalah (${x},${y}).`;graph('graph2',[[0,0,a,b,'#2369c8','a'],[a,b,x,y,'#16845e','b'],[0,0,x,y,'#d98216','R']])}
+function draw3(){let x=v('bx'),y=v('by'),m=Math.hypot(x,y),ang=(Math.atan2(y,x)*180/Math.PI+360)%360;$('bxv').textContent=x;$('byv').textContent=y;$('blen').textContent=fmt(m)+' satuan';$('bangle').textContent=fmt(ang)+'°';$('bigText').textContent=`|v| = √(${x}² + ${y}²) = ${fmt(m)} satuan. Sudut arah terhadap sumbu x positif = ${fmt(ang)}°.`;graph('graph3',[[0,0,x,y,'#2369c8','v']])}
+['ax','ay'].forEach(id=>$(id).oninput=draw1);['ox','oy','px','py'].forEach(id=>$(id).oninput=draw2);['bx','by'].forEach(id=>$(id).oninput=draw3);
+$('reset1').onclick=()=>{$('ax').value=4;$('ay').value=3;draw1()};$('reset2').onclick=()=>{[['ox',3],['oy',2],['px',2],['py',3]].forEach(([i,n])=>$(i).value=n);draw2()};
+document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-tab]').forEach(t=>t.classList.toggle('active',t===b));['konsep','operasi','besar','tantangan'].forEach(p=>$('page-'+p).classList.toggle('hidden',p!==b.dataset.tab))});
+const qs=[
+['Sebuah vektor memiliki komponen (3,4). Berapakah panjangnya?',['5 satuan','6 satuan','7 satuan','12 satuan'],0,'Panjang = √(3²+4²) = √25 = 5.'],
+['Vektor a = (2,3) dan b = (4,1). Komponen a+b adalah ...',['(6,4)','(2,2)','(8,3)','(6,3)'],0,'Jumlahkan komponen sejenis: (2+4, 3+1) = (6,4).'],
+['Vektor (−3,2) memiliki arah perpindahan ...',['3 ke kanan, 2 ke atas','3 ke kiri, 2 ke atas','3 ke kiri, 2 ke bawah','3 ke kanan, 2 ke bawah'],1,'Komponen x negatif berarti ke kiri dan y positif berarti ke atas.'],
+['Jika a = (5,2) dan b = (2,−1), maka a−b adalah ...',['(7,1)','(3,3)','(3,1)','(7,−1)'],1,'a−b = (5−2, 2−(−1)) = (3,3).'],
+['Sebuah vektor memiliki komponen (0,−6). Arah vektor tersebut adalah ...',['Sumbu x positif','Sumbu y positif','Sumbu y negatif','Sumbu x negatif'],2,'Komponen horizontal nol dan komponen vertikal negatif, sehingga arahnya ke bawah.']
+];let qi=0,score=0,answered=false;
+function quiz(){let q=qs[qi];$('qnum').textContent=`Soal ${qi+1} dari 5`;$('question').textContent=q[0];$('choices').innerHTML='';$('feedback').classList.add('hidden');$('nextQ').classList.add('hidden');answered=false;q[1].forEach((s,i)=>{let b=document.createElement('button');b.textContent='ABCD'[i]+'. '+s;b.onclick=()=>{if(answered)return;answered=true;if(i===q[2])score++;$('score').textContent=score+' / 5';$('feedback').textContent=(i===q[2]?'✓ Jawaban benar. ':'✗ Belum tepat. ')+q[3];$('feedback').classList.remove('hidden');[...$('choices').children].forEach((el,j)=>{el.disabled=true;if(j===q[2])el.classList.add('active')});$('nextQ').classList.remove('hidden');$('nextQ').textContent=qi===4?'Lihat hasil':'Soal berikutnya →'};$('choices').appendChild(b)})}
+$('nextQ').onclick=()=>{if(qi<4){qi++;quiz()}else{$('question').textContent=`Tantangan selesai! Skor kamu ${score} dari 5.`;$('choices').innerHTML='';$('feedback').textContent=score>=4?'Hebat! Pemahamanmu sudah baik.':'Terus berlatih. Pelajari kembali visualisasi dan operasi vektor.';$('feedback').classList.remove('hidden');$('nextQ').classList.add('hidden')}};$('restartQ').onclick=()=>{qi=0;score=0;$('score').textContent='0 / 5';quiz()};
+draw1();draw2();draw3();quiz();
+})();
+</script></body></html>
